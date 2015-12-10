@@ -1,0 +1,31 @@
+%Abstract
+
+% REFERERA TILL Face Detection in Color images
+
+%The facial feature detection is an important step to extract a final face mask. As REF motivates, eyes and mouth are dominant %features in the research field to perform face detection. ....The maps are estimated in the ycbcr color space
+
+To extract the eyes, two independent eye maps are built. The first is from chrominance components and the second is from luminance components. The two components are then merged with AND-operator to get a final eye mask. The interesting parts in the chrominance component are the red and blue chroma component. These components are observed to have high variation around the eyes for the blue chroma and higher variation for the red chroma component. This observation is important at the choice of the color space. As described in REF, we construct the eye map of the first component, the chroma component, by the expression
+\newline
+\newline
+\begin{equation}
+EyeMapChroma = \frac{1}{3} \lbrace C_b^2 + \tilde{C_r^2} + \frac{C_b}{C_r} \rbrace
+\end{equation}
+%$EyeMapC = \frac{1}{3}{(C \index{b}$
+\newline
+\newline
+, where $C_b$ is the blue chroma component and $\tilde{C_r}$ is negative $C_r$ (255 - $C_r$). The terms $C_b^2$, $\tilde{C_r^2}$ and $\frac{C_b}{C_r}$ are normalized to the range $[0, 255]$.
+\newline
+\newline
+To estimate the second component, the luminance, we take advantage of the intensity structure area around the eyes in the luminance component, where the pixels are dark and bright. The morphological operations Dilation and Erosion are used with to highlight the area.  The kernels are applied iteratively with different size. FIGURE!!!
+\newline
+\newline
+\begin{equation}
+EyeMapLuma = \frac{Y(x,y) DILATION K_n}{Y(x,y) EROSION K_n}
+\end{equation}
+\newline
+\newline
+where Y(x,y) is the pixel value in the luminance component, $K_n$ is the kernel with size $n$ and $ n \in [1,10]$.
+\newline
+Before the eye maps are combined, the contrast in the eye map chroma component is enhanced by histogram equalization. Finally, the eye maps are combined with the AND operation: $EyeMap = (EyemapC) \textbf{AND} (EyeMapLuma)$. For polarization and better result, facial areas can be suppressed by using dilation and erosion operations. FIGURE!!!
+
+
