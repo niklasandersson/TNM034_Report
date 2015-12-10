@@ -8,7 +8,7 @@
 %
 % Original Author:
 % Nicolas Diaz (nsdiaz@uc.cl) with extensive modifications by:
-% Vel (vel@latextemplates.com)
+% Vel (vel@latextemplates.co1m)
 %
 % License:
 % CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
@@ -44,6 +44,13 @@
 \usepackage[T1]{fontenc} % Required for accented characters
 \linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
 
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} % load a font with all the characters
+
+\providecommand{\keywords}[1]{\textbf{\textit{Keywords:}} #1}
+
 \makeatletter
 \renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
 \renewcommand{\@listI}{\itemsep=0pt} % Reduce the space between items in the itemize environments and the bibliography
@@ -60,6 +67,8 @@
 \vspace{40pt} % Some vertical space between the author block and abstract
 \end{flushright}
 }
+
+
 
 %----------------------------------------------------------------------------------------
 %	TITLE
@@ -91,6 +100,8 @@
 This is abstract!
 \input{tex/abstract.tex}
 \end{abstract}
+
+\noindent \keywords{\input{tex/keywords.tex}}
 
 \vspace{30pt} % Some vertical space between the abstract and first section
 
