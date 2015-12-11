@@ -1,7 +1,10 @@
 This section will be explained through an example where the input is the color corrected image of Figure \ref{fig:faceMasks}\textit{a}.
 
 
+
 In short, initially is the input image padded with zeros on all sides by a $4x4$ kernel in order for future morphological operations to work as intended. Then are several masks derived that are used for image segmentation in order to narrow the search space for eyes and mouth. To be clear, we will call the mask that marks out where the estimated face is in the image for \textit{face mask} and the result of this phase for \textit{output}. The output is essentially an image derived from a narrowed face mask in form of a rectangle that precisely covers the eyes and mouth, see Figure \ref{fig:fdResult} for an example. When the face mask is found we can search for the eyes and mouth. The eyes and mouth will then be used to compute the output. 
+
+\input{tex/faceMasks.tex}
 
 
 \subsubsection{Estimated skin mask}
@@ -19,10 +22,10 @@ Next follows the computation of a mask for the background (Figure \ref{fig:faceM
 
 The function takes the gray version of the input image as argument. Furthermore, we first increase the contrast of the image by using \textit{Matlab's} \textit{imadjust} function. Then we use edge filtering on the image with the \textit{Canny} kernel. This will highlight the edges of the image. We then perform some morphological operations that will implicitly threshold the image and deliver a binary mask containing blobs that represent each region. As previously mentioned before continuing any computation, we remove small blobs.
 
-Then we derive a gray scale image representing the amount of high frequencies in each region by performing a median filter of the input image followed by a filtering with the \textit{Laplacian of Gaussian} kernel. The median filter will remove unwanted noise as we are only interested in those frequencies caused by the actual objects in our image. The LoG filter will first smooth the image a bit more by the Gaussian kernel before the Laplacian kernel is applied in order to give us the more important frequencies of the image. Given this computed image containing the high frequency information we can for each region blob calculate the percentage of high frequency. We conclude that if the high frequency part is less than $0.8$ percent, it is likely that this region of the image is part of the background and that we therefore can add this blob to the background mask.
+Then we derive a gray scale image representing the amount of high frequencies in each region by performing a median filtering of the input image followed by a filtering with the \textit{Laplacian of Gaussian} kernel. The median filter will remove unwanted noise as we are only interested in those frequencies caused by the actual objects in our image. The LoG filter will first smooth the image a bit more by the Gaussian kernel before the Laplacian kernel is applied in order to give us the more important frequencies of the image. Given this computed image containing the high frequency information we can for each region blob calculate the percentage of high frequency. We conclude that if the high frequency part is less than $0.8$ percent, it is likely that this region of the image is part of the background and that we therefore can add this blob to the background mask.
 
 \subsubsection{Non face regions mask}
-Next follows the computation of a mask containing regions of the image that we deem will not be part of the image, see Figure \ref{fig:faceMasks}\textit{d}. This through the utilization of the YCbCr as well as the HSV color space, as seen in Equation \ref{eq:nonFaceMask}. The mask is before being used also subject of some morphological operations (opening and removal of small blobs), this in order to remove small parts, like eyes, which sometimes are included in this mask.
+Next follows the computation of a mask containing regions of the image that we deem will not be part of the face, see Figure \ref{fig:faceMasks}\textit{d}. This through the utilization of the YCbCr as well as the HSV color space, as seen in Equation \ref{eq:nonFaceMask}. The mask is before being used also subject of some morphological operations (opening and removal of small blobs), this in order to remove small parts, like eyes, which sometimes are included in this mask.
 
 \begin{equation} \label{eq:nonFaceMask}
 \begin{split}
@@ -47,7 +50,7 @@ from some faces. For example, removing the neck will also remove eventual neckla
 
 We begin with dilating the contour of the face quite a lot. This as the hair line of our face contour often consist of a zig-zag pattern and that dilation will therefore smooth out these lines, see Figure \ref{fig:faceMasks}\textit{k}. Now by filling in the holes (because of this operation we padded the image with zeros in the beginning) and XOR-ing with the previous state we can derive Figure \ref{fig:faceMasks}\textit{l}. Notice how the neck in this case is almost in an own blob, this is what we wanted, but this did not happen with this particular image. If it would be in an own blob, we would select the largest blob to be our new estimation of the face mask. To determine the final face mask used to derive the face image in Figure \ref{fig:faceMasks}\textit{m} we only need to perform some iterative dilation to our estimation. Notice how we got rid of some of the hair and that we almost got rid of the neck in this case by comparing with Figure \ref{fig:faceMasks}\textit{h}.
 
-\input{tex/faceMasks.tex}
+
 
 \input{tex/eyeMap.tex}
 
