@@ -1,4 +1,51 @@
-Write about Face Detection here. :)
+This section will be explained through an example where the input is the color corrected image of Figure \ref{fig:faceMasks}\textit{a}.
+
+
+In short, initially is the input image padded with zeros on all sides by a $4x4$ kernel in order for future morphological operations to work as intended. Then are several masks derived that are used for image segmentation in order to narrow the search space for eyes and mouth. To be clear, we will call the mask that marks out where the estimated face is in the image for \textit{face mask} and the result of this phase for \textit{output}. The output is essentially an image derived from a narrowed face mask in form of a rectangle that precisely covers the eyes and mouth, see Figure \ref{fig:fdResult} for an example. When the face mask is found we can search for the eyes and mouth. The eyes and mouth will then be used to compute the output. 
+
+
+\subsubsection{Estimated skin mask}
+After padding the color corrected input image several masks are computed. At first is a mask for estimated skin regions computed through thresholding inside the \textit{YCbCr} color space. See Equation \ref{eq:estimatedSkinMask} for the specific values we use and Figure \ref{fig:faceMasks}\textit{b} for the estimated skin mask of this example.
+
+\begin{equation} \label{eq:estimatedSkinMask}
+\begin{split}
+estimatedSkinMask = and( & and(C_{b}> 95, \ C_{b} < 145), \\
+ & and(C_{r} > 132, \ C_{r} < 165))
+\end{split}
+\end{equation}
+
+\subsubsection{Background mask}
+Next follows the computation of a mask for the background (Figure \ref{fig:faceMasks}\textit{c}), or in more particular, a mask containing large homogeneous regions of low frequency. This as we assume that a face contains a lot of high frequency parts while background regions, e.g. walls, often are homogeneous. To avoid that small regions in the face are selected for this mask we remove all regions with areas containing less than $5$ percent of the pixels of the image.
+
+The function takes the gray version of the input image as argument. Furthermore, we first increase the contrast of the image by using \textit{Matlab's} \textit{imadjust} function. Then we use edge filtering on the image with the \textit{Canny} kernel. This will highlight the edges of the image. We then perform some morphological operations that will implicitly threshold the image and deliver a binary mask containing blobs that represent each region. As previously mentioned before continuing any computation, we remove small blobs.
+
+Then we derive a gray scale image representing the amount of high frequencies in each region by performing a median filter of the input image followed by a filtering with the \textit{Laplacian of Gaussian} kernel. The median filter will remove unwanted noise as we are only interested in those frequencies caused by the actual objects in our image. The LoG filter will first smooth the image a bit more by the Gaussian kernel before the Laplacian kernel is applied in order to give us the more important frequencies of the image. Given this computed image containing the high frequency information we can for each region blob calculate the percentage of high frequency. We conclude that if the high frequency part is less than $0.8$ percent, it is likely that this region of the image is part of the background and that we therefore can add this blob to the background mask.
+
+\subsubsection{Non face regions mask}
+Next follows the computation of a mask containing regions of the image that we deem will not be part of the image, see Figure \ref{fig:faceMasks}\textit{d}. This through the utilization of the YCbCr as well as the HSV color space, as seen in Equation \ref{eq:nonFaceMask}. The mask is before being used also subject of some morphological operations (opening and removal of small blobs), this in order to remove small parts, like eyes, which sometimes are included in this mask.
+
+\begin{equation} \label{eq:nonFaceMask}
+\begin{split}
+  nonSkinMask1 & = C_{b} > C_{r} + 10 \\
+  nonSkinMask2 & = V < S - 0.2 \\
+  nonFaceMask & = or(nonSkinMask1, \ nonSkinMask2)
+\end{split}
+\end{equation}
+
+\subsubsection{Face mask}
+Now we can combine the estimated skin mask (Figure \ref{fig:faceMasks}\textit{b}) with the background mask (Figure \ref{fig:faceMasks}\textit{c}) as well as the mask containing non face regions (Figure \ref{fig:faceMasks}\textit{d}) in order to derive our first estimation for the face mask (Figure \ref{fig:faceMasks}\textit{e}). Worth noticing is that Figure \ref{fig:faceMasks}\textit{e} both contains large parts of the woman's face as well as parts of the pictured person's face in the background painting. The combining is essentially done by an AND operation; \\ 
+\-\hspace{1.0cm} \textit{AND(estimatedSkinMask, $\neg$ backgroundMask, $\neg$ nonFaceMask)}.
+
+To improve this estimation we perform opening operations, this will give us Figure \ref{fig:faceMasks}\textit{f}. Then to further improve the estimation all the holes in the derived mask is filled before the largest blob is selected to be the new estimation. This new estimation will then be the subject of an iterative opening process that shrinks the mask as much as possible while making sure that there still is a blob left in the mask, see the result of this process in Figure \ref{fig:faceMasks}\textit{g}.
+
+We now try to further improve the estimation while we in the process also try to derive eye candidate masks. To do this we first compute a gray image over the face, Figure \ref{fig:faceMasks}\textit{h}, by utilization of our face mask estimation. If the gray face image has one large bright part and one large dark part, which corresponds to the person being lit by a light from the side, and that the mean values of these regions are sufficiently diverse we brighten the dark part of the face by adding $80$ percent of the mean value difference to each pixel of the dark part. To compute the bright and dark part of the image we use the Y component of the YCbCr color space. 
+
+By thresholding the gray face image by $0.47$ we receive the binary image seen in Figure \ref{fig:faceMasks}\textit{i}. This binary image is only computed to be used for deriving the face contours, see Figure \ref{fig:faceMasks}\textit{j}. This is done by the unconventional way of using filtering with the Laplacian kernel, however through experimentation we have found out that this method works better for this specific case than other edge detection algorithms. This filtered face mask is then influenced by a number of morphological and binary operations. We first extract the main contour of the face, this is done by filling in all the holes and XOR-ing this mask with an eroded version of this mask. It is done in this particular way as if the face contour instead was selected by the blob with largest area, we could get a blob inside the face instead, e.g. a contour of someones beard. If we on the other hand would select the blob that has the largest convex hull the border could sometimes be connected to the borders of the eyes (e.g. slight side pose), eliminating one of the eyes from our mask, which is not what we want. By selecting regions that lie inside of the face contour we can extract different masks for eye candidates, combined they make up \\ Figure \ref{fig:eyeMap}\textit{e}.
+
+Now that we have computed our eye candidates that help us narrow the search space for the actual eyes, we can try to improve the estimated face mask even more. What led us to this idea is that it would be nice if we could get rid of excessive hair and the neck 
+from some faces. For example, removing the neck will also remove eventual necklaces that could interfere with the process of finding the eyes. The same applies to hair, as curls often form circular patterns that could be mistaken for an eye.
+
+We begin with dilating the contour of the face quite a lot. This as the hair line of our face contour often consist of a zig-zag pattern and that dilation will therefore smooth out these lines, see Figure \ref{fig:faceMasks}\textit{k}. Now by filling in the holes (because of this operation we padded the image with zeros in the beginning) and XOR-ing with the previous state we can derive Figure \ref{fig:faceMasks}\textit{l}. Notice how the neck in this case is almost in an own blob, this is what we wanted, but this did not happen with this particular image. If it would be in an own blob, we would select the largest blob to be our new estimation of the face mask. To determine the final face mask used to derive the face image in Figure \ref{fig:faceMasks}\textit{m} we only need to perform some iterative dilation to our estimation. Notice how we got rid of some of the hair and that we almost got rid of the neck in this case by comparing with Figure \ref{fig:faceMasks}\textit{h}.
 
 \input{tex/faceMasks.tex}
 

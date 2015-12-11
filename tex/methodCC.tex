@@ -1,4 +1,4 @@
-We have implemented a simple way of color correcting the images give as input. It consists of two parts where the first part is black balancing and the second part is white balancing. An example of what our algorithm achieve is pictured in Figure \ref{fig:cc}.  
+We have implemented a simple way of color correcting the images given as input. It consists of two parts where the first part is black balancing and the second part is white balancing. An example of what our algorithm achieve is pictured in Figure \ref{fig:cc}.  
 
 \begin{figure}[H]
 \centering
@@ -28,6 +28,6 @@ To solve this problem we extract a few percent ($1.5$) of the most black pixels 
 
 
 \subsubsection{White balancing}
-This part aims to calibrate the whites of the image in order to achieve better whites. It is essentially the same process as black balancing, however with one notably difference, as instead of utilizing subtraction by the mean values we compute scale factors instead that raise these mean white values of the brightest pixels to become true white. Here we also only take $0.1$ percent of the most white pixels of each channel into consideration when computing the scale factors'.
+This part aims to calibrate the whites of the image in order to achieve better whites. It is essentially the same process as black balancing, however with one notably difference, as instead of utilizing subtraction by the mean values we apply scale factors that raise these mean white values of the brightest pixels to become true white. Here we take $0.1$ percent of the most white pixels of each channel into consideration when computing the scale factors'.
 
 
