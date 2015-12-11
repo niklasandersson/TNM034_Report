@@ -1,1 +1,12 @@
-Write some deep introduction here :)
+This paper describes how to implement a software for face recognition in MATLAB. The implementation should from an input image of an unknown face, detect the face, extract relevant features from it and make a decision if the face in the image belongs to a known person in a database and, if so, to whom? Furthermore the face recognition should work on input images that are modified with a small rotation, scaling or change of tone values.
+
+Some prerequisites were that the faces in the images all looked into the camera and their skin color did not differ a lot from each other. Also the faces were normalized to have the eyes and mouths aligned across all the images.
+
+Face recognition requires solutions to multiple sub problems, such as pre-processing, face detection and feature extraction.
+
+\begin{itemize}
+  \item ---kanske något om preprocess---
+  \item The face detection makes a couple of operations to find the face of the input image. Some examples of operations are: Lighting compensation, Color Space Transformation, Skin color detection.
+  \item The feature extraction finds the eyes and the mouth. It also makes a face boundary detection.
+  \item The face recognition part can be made using different methods. In this paper the methods \emph{LPQ}\footnote{LPQ - Local phase quantization} and \emph{Eigenfaces} will be described.
+\end{itemize}
