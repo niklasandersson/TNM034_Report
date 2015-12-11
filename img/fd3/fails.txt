@@ -1,0 +1,7 @@
+fail1 due to the right eye is located on the nose, failure in the choice of eye
+
+fail2 due toe wrong skin estimation
+
+fail3 due to faulty eyeCandidates
+
+fail4 due to faulty eyeCandidates

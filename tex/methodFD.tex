@@ -43,6 +43,8 @@ To improve this estimation we perform opening operations, this will give us Figu
 
 We now try to further improve the estimation while we in the process also try to derive eye candidate masks. To do this we first compute a gray image over the face, Figure \ref{fig:faceMasks}\textit{h}, by utilization of our face mask estimation. If the gray face image has one large bright part and one large dark part, which corresponds to the person being lit by a light from the side, and that the mean values of these regions are sufficiently diverse we brighten the dark part of the face by adding $80$ percent of the mean value difference to each pixel of the dark part. To compute the bright and dark part of the image we use the Y component of the YCbCr color space. 
 
+\input{tex/grayFace.tex}
+
 By thresholding the gray face image by $0.47$ we receive the binary image seen in Figure \ref{fig:faceMasks}\textit{i}. This binary image is only computed to be used for deriving the face contours, see Figure \ref{fig:faceMasks}\textit{j}. This is done by the unconventional way of using filtering with the Laplacian kernel, however through experimentation we have found out that this method works better for this specific case than other edge detection algorithms. This filtered face mask is then influenced by a number of morphological and binary operations. We first extract the main contour of the face, this is done by filling in all the holes and XOR-ing this mask with an eroded version of this mask. It is done in this particular way as if the face contour instead was selected by the blob with largest area, we could get a blob inside the face instead, e.g. a contour of someones beard. If we on the other hand would select the blob that has the largest convex hull the border could sometimes be connected to the borders of the eyes (e.g. slight side pose), eliminating one of the eyes from our mask, which is not what we want. By selecting regions that lie inside of the face contour we can extract different masks for eye candidates, combined they make up \\ Figure \ref{fig:eyeMap}\textit{e}.
 
 Now that we have computed our eye candidates that help us narrow the search space for the actual eyes, we can try to improve the estimated face mask even more. What led us to this idea is that it would be nice if we could get rid of excessive hair and the neck 
@@ -52,15 +54,20 @@ We begin with dilating the contour of the face quite a lot. This as the hair lin
 
 
 
+
+\subsubsection{Eye map}
+
 \input{tex/eyeMap.tex}
 
 
 
+\subsubsection{Mouth map}
+
+\input{tex/mouthMap.tex}
 
 
 
-
-
+\subsubsection{Output}
 
 \begin{figure}[H]
 \centering
