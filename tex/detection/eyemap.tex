@@ -4,7 +4,7 @@
 
 %The facial feature detection is an important step to extract a final face mask. As REF motivates, eyes and mouth are dominant %features in the research field to perform face detection. ....The maps are estimated in the ycbcr color space
 
-To extract the eyes, two independent eye maps are built. The first is from chrominance components and the second is from luminance components. The two components are then merged with AND-operator to get a final eye mask. The interesting parts in the chrominance component are the red and blue chroma component. These components are observed to have high variation around the eyes for the blue chroma and higher variation for the red chroma component. This observation is important at the choice of the color space. As described in REF, we construct the eye map of the first component, the chroma component, by the expression
+To extract the eyes, two independent eye maps are built. The first is from chrominance components and the second is from luminance components. The two components are then merged with AND-operator to get a final eye mask. The interesting parts in the chrominance component are the red and blue chroma component. These components are observed to have high variation around the eyes for the blue chroma and higher variation for the red chroma component. This observation is important at the choice of the color space. As described in \cite{fdInColorImages}, we construct the eye map of the first component, the chroma component, by the expression
 \newline
 \newline
 \begin{equation}
