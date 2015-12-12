@@ -1,10 +1,12 @@
-The aim of this project work is to to implement an algorithm in \textit{Matlab} that can detect and recognize human faces in different color images. The implementation should from an input image of an unknown face detect where in the image the face is located and make a decision if it belongs to a known person in the given database. Furthermore should the algorithm be tolerant for small rotations and scaling inside the image plane as well as for varying tone values, lightning conditions, environments and degrees of blur. Other prerequisites for the project work were that the input image always include a front-faced portrait and that the images could be of varying size.
+\subsection{Aim}
+The aim of this project work is to implement an algorithm in \textit{Matlab} that can detect and recognize human faces in different color images. The implementation should from an input image of an unknown face detect where in the image the face is located and make a decision if it belongs to a known person in the given database. Furthermore should the algorithm be tolerant for small rotations and scaling inside the image plane as well as for varying tone values, lightning conditions, environments and degrees of blur. Other prerequisites for the project work were that the input image always include a front-faced portrait and that the images could be of varying size.
 
+\subsection{Pipeline}
 The pipeline of a standard face recognition algorithm involves solving multiple sub problems such as \textit{preprocessing}, \textit{face detection} and \textit{face recognition}. Each of these sub problems can be solved in various ways and below we list our solutions.
 
 \begin{itemize}
   \item \textbf{In the preprocessing phase} we use simple methods of color correction, namely black and white balancing. 
-  \item \textbf{The face detection phase} is built around finding regions of skin color in the \textit{YCbCr} color space and the combination of those regions with masks gathered through various segmentation steps. 
+  \item \textbf{The face detection phase} is built around finding regions of skin in the \textit{YCbCr} color space and the combination of those regions with masks gathered through various segmentation steps. 
   \item \textbf{For the face recognition part} we base our algorithm upon on the \textit{Local Phase Quantization} (LPQ) algorithm. 
 
   % \emph{LPQ}\footnote{LPQ - Local phase quantization} and \emph{Eigenfaces} are described.
