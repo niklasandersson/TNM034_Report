@@ -1,2 +1,16 @@
-%Abstract
-Face recognition has various fields and many applications... 
+This report presents the different phases that is included for a face recognition pipeline, where the 
+given database with test images covers various of problems. The 
+goal is to find a model which is suitable to, at some degree, solve: 
+geometric invariance, illumination invariance and blur invariance face 
+recognition problems. This report will cover each phase with
+theory and implementation steps. At the first step, color correction, we 
+use black balancing and white balancing to calibrate the color to 
+facilitate the post processing operations at later stages.
+The second step phase, face detection, where various extraction steps 
+are followed: skin tone extraction, background $\&$ foreground extraction, eye 
+map extraction and finally mouth map extraction. The combination of the 
+extraction operations results in a final detection of the face. Face recognition
+, the last step, is done by using a blurr invariant method, LPQ. We have focused
+to get an accurate result as possible, rather than e.g. faster computation time.
+\newline
+\newline
