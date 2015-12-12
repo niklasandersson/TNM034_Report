@@ -1,12 +1,11 @@
-This paper describes how to implement a software for face recognition in MATLAB. The implementation should from an input image of an unknown face, detect the face, extract relevant features from it and make a decision if the face in the image belongs to a known person in a database and, if so, to whom? Furthermore the face recognition should work on input images that are modified with a small rotation, scaling or change of tone values.
+The aim of this project work is to to implement an algorithm in \textit{Matlab} that can detect and recognize human faces in different color images. The implementation should from an input image of an unknown face detect where in the image the face is located and make a decision if it belongs to a known person in the given database. Furthermore should the algorithm be tolerant for small rotations and scaling inside the image plane as well as for varying tone values, lightning conditions, environments and degrees of blur. Other prerequisites for the project work were that the input image always include a front-faced portrait and that the images could be of varying size.
 
-Some prerequisites were that the images were taken front face and their skin color did not differ a lot from each other. Also the faces eyes and mouths were aligned across all the images.
-
-Face recognition requires solutions to multiple sub problems, such as pre-processing, face detection and feature extraction. Each of these sub problems can be solved in different ways. Down below we list our solution in the different sub problems.
+The pipeline of a standard face recognition algorithm involves solving multiple sub problems such as \textit{preprocessing}, \textit{face detection} and \textit{face recognition}. Each of these sub problems can be solved in various ways and below we list our solutions.
 
 \begin{itemize}
-  \item In the pre-process we process the input image to be ready for face detection later on. One important operation in the pre-process is the color correction.
-  \item The face detection makes a couple of operations to find the face of the input image. Some examples of operations are: Lighting compensation, Color Space Transformation, Skin color detection.
-  \item The feature extraction finds the eyes and the mouth. It also makes a face boundary detection.
-  \item The face recognition part can be made using different methods. In this paper the methods \emph{LPQ}\footnote{LPQ - Local phase quantization} and \emph{Eigenfaces} are described.
+  \item \textbf{In the preprocessing phase} we use simple methods of color correction, namely black and white balancing. 
+  \item \textbf{The face detection phase} is built around finding regions of skin color in the \textit{YCbCr} color space and the combination of those regions with masks gathered through various segmentation steps. 
+  \item \textbf{For the face recognition part} we base our algorithm upon on the \textit{Local Phase Quantization} (LPQ) algorithm. 
+
+  % \emph{LPQ}\footnote{LPQ - Local phase quantization} and \emph{Eigenfaces} are described.
 \end{itemize}
