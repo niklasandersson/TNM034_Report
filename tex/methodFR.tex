@@ -1,1 +1,13 @@
-The first face recognition solution that was looked at was Eigenfaces. It went fast to implement but the group agreed on that the recognition rate was low. Therefore the group searched for other apporaches to the problem. The second approach was to see if Fisherfaces could make a better recognition rate. However a big problem with fisherfaces is that we need more picture of each person in the training set. That made us look into the LPQ solution. The group found a good code on a LPQ solution and by changing certain parameters such as the kernel size the group stumbled upon a good recognition rate.
+The problem of face recognition was solved using the LPQ method described in the Theory section.
+
+The short-time Fourier transform was performed by using a two step convolution, as described in~\cite{LPQ:1996}, between the image and two kernels, Equation~\ref{eq:LPQKernel} as well as its complex conjugate where \(h\) is the kernel size.
+
+\begin{equation}
+  K(\mathbf{x}) = e^{\frac{-2 \pi i \mathbf{x}}{h}}
+\label{eq:LPQKernel}
+\end{equation}
+
+The convolutions where performed four consecutive times to derive the STFT
+for the different frequency intervals specified by the kernel size. The imaginary and real parts of the STFT computations where transformed into a binary representation by encoding negative values to zero and positive values to one. By converting the binary values to decimal numbers and creating a histogram containing the amount of occurrences there where of each number an image descriptor could be derived.
+
+The LPQ method was applied in two different steps when performing face recognition. The first step applied LPQ to all images in the database and stored the resulting descriptors in a file. This way no repeated computations had to be performed on the images in the database when performing recognition. The second step is the verification step where an image is attempted to be matched against one of the descriptors previously computed. First LPQ is applied to the image so that a descriptor is obtained. This descriptor is then compared to all descriptors from the images in the database and the differences between them is computed using the euclidean distance. The descriptor with the smallest difference is chosen as the best match unless the difference is larger than a set threshold in which case the conclusion can be drawn that there is no matching image in the database.
