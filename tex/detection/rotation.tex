@@ -1,5 +1,6 @@
 A face rotation can be performed by taking advantage of the symmetric of the face, where both eyes are mirrored from the line that goes through the center point of the face and is aligned along the y-axis. This is done by extracting the eyes from the eye map and use the symmetric line to get the correct rotation angle.
 \newline
+REF!!!
 The algorithm used to locate the eyes as circle object, is called Circular Hough Transform, CHT. The algorithm is mainly used because of its robustness at noisy areas, occlusion and varying illumination. There are no specific steps to implement the algorithm, therefore, a short description of the chosen steps is presented as follows.
 \newline
 \newline
@@ -8,7 +9,7 @@ The first step is to compute the accumulator array. The foreground pixels of hig
 \begin{figure}[H]
 \centering
 
-\includegraphics[scale=0.4]{accarray.png}
+\includegraphics[scale=0.4]{img/fd/accarray.png}
 
 \caption{CHT voting pattern to estimate the center of the circle.}
 \label{fig:CHT}

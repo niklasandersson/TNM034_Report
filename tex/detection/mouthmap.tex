@@ -1,14 +1,32 @@
-As for the chrominance components in the eye map, we can make a similar observations for the colors at the mouth area. As REF mentions, we can observe that the mouth area contain much stronger red chrominance component and weaker blue chrominance component than other areas on the face. We can also observe that the mouth region has strong values for $C_r^2$ component and low values for $\frac{C_r}{C_b}$ component. The mouth map is therefore designed as
-\newline
-\newline
-\begin{equation}
-MouthMap = (C_r^2 \cdot (C_r^2 - \eta \cdot \frac{C_r}{C_b})^2
+
+As for the chrominance components in the eye map, we can make a similar observations for the colors appearing around the mouth. As REF mentions, we can observe that the mouth area contain much stronger red chrominance component and weaker blue chrominance component than other areas on the face. We can also observe that the mouth region has strong values for the $C_r^2$ component and low values for the $\frac{C_r}{C_b}$ component. Through this reasoning the mouth map is constructed according to Equation \ref{eq:mouthMap} and \ref{eq:nn}.
+
+\begin{equation} \label{eq:mouthMap}
+\begin{split}
+mouthMap = C_r^2 \cdot (C_r^2 - \eta \cdot \frac{C_r}{C_b})^2
+\end{split}
 \end{equation}
-\newline
-where
-\newline
-\begin{equation}
+
+
+% =======
+% As for the chrominance components in the eye map, we can make a similar observations for the colors at the mouth area. As $\cite{fdInColorImages}$ mentions, we can observe that the mouth area contain much stronger red chrominance component and weaker blue chrominance component than other areas on the face. We can also observe that the mouth region has strong values for $C_r^2$ component and low values for $\frac{C_r}{C_b}$ component. The mouth map is therefore designed as
+% \newline
+% \newline
+% \begin{equation}
+% MouthMap = (C_r^2 \cdot (C_r^2 - \eta \cdot \frac{C_r}{C_b})^2
+% >>>>>>> 05da8faa2dbc6071a6590e65148c469b28a75a03
+
+
+\begin{equation} \label{eq:nn}
+\begin{split}
 \eta = 0.95 \cdot \frac{\frac{1}{n} \cdot \sum\limits_{(x,y) \in FG} C_r(x,y)^2}{\frac{1}{n} \cdot \sum\limits_{(x,y) \in FG} \frac{C_r(x,y)}{C_b(x,y)}}.
+\end{split}
 \end{equation}
-\newline
-Where $\eta$ is a parameter as the ratio of the average of $C_r^2$ to the average $\frac{C_r}{C_b}$ and $n$ is the number of pixels in the mask. The products $C_r^2$ and $\frac{C_r^2}{C_b^2}$ are normalized to an interval of $[0,255]$. FIGURE!!!!
+
+
+$\eta$ is a parameter for the ratio of the average of $C_r^2$ to the average $\frac{C_r}{C_b}$ and $n$ is the number of pixels in the mask. The products $C_r^2$ and $\frac{C_r^2}{C_b^2}$ are normalized to an interval of $[0,255]$. FIGURE!!!!
+
+% =======
+% \newline
+% Where $\eta$ is a parameter as the ratio of the average of $C_r^2$ to the average $\frac{C_r}{C_b}$ and $n$ is the number of pixels in the mask. The products $C_r^2$ and $\frac{C_r^2}{C_b^2}$ are normalized to an interval of $[0,255]$. FIGURE!!!!
+% >>>>>>> 05da8faa2dbc6071a6590e65148c469b28a75a03
