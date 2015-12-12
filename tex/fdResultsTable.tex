@@ -1,0 +1,16 @@
+
+With width specified:
+\begin{center}
+    \begin{tabular}{ | l | l | l | p{5cm} |}
+    \hline
+    Database & Blur, $\sigma = 0.5$ & Blur, $\sigma = 1.0$ & Blur, $\sigma = 2.5$ & Light +10$%$ & \\ \hline
+    Access & 11C & 22C & A clear & Light +10$%$ & \\ \hline
+    No Access & 9C & 19C & Cloudy & Light +10$%$ & \\ \hline
+    Hard & 10C & 21C & Rain & Blur, $\sigma = 1.0$ & \\ \hline
+    Test & 10C & 21C & Rain & Blur, $\sigma = 1.0$ & \\ \hline
+    \end{tabular}
+\end{center}
+
+The blur test is done by a gaussian low pass filter with the  standard deviation parameter $\sigma$.
+Tone testing are done by decreasing or increasing the intensity value at each pixel with a parameter L.
+
