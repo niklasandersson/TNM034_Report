@@ -50,7 +50,7 @@ Now we can combine the estimated skin mask (Figure \ref{fig:faceMasks}\textit{b}
 
 To improve this estimation we perform opening operations, this will give us Figure \ref{fig:faceMasks}\textit{f}. Then to further improve the estimation all the holes in the derived mask is filled before the largest blob is selected to be the new estimation. This new estimation will then be the subject of an iterative opening process that shrinks the mask as much as possible while making sure that there still is a blob left in the mask, see the result of this process in Figure \ref{fig:faceMasks}\textit{g}.
 
-We now try to further improve the estimation while we in the process also try to derive eye candidate masks. To do this we first compute a gray image over the face, Figure \ref{fig:faceMasks}\textit{h}, by utilization of our face mask estimation. If the gray face image has one large bright part and one large dark part, which corresponds to the person being lit by a light from the side, and that the mean values of these regions are sufficiently diverse we brighten the dark part of the face by adding $80$ percent of the mean value difference to each pixel of the dark part. To compute the bright and dark part of the image we use the Y component of the YCbCr color space. 
+We now try to further improve the estimation while we in the process also try to derive eye candidate masks. To do this we first compute a gray image over the face, Figure \ref{fig:faceMasks}\textit{h}, by utilization of our face mask estimation. If the gray face image has one large bright part and one large dark part, which corresponds to the person being lit by a light from the side, and that the mean values of these regions are sufficiently diverse we brighten the dark part of the face by adding $80$ percent of the mean value difference to each pixel of the dark part. This reasoning is illustrated by Figure \ref{fig:grayFace} and notice that both eyes are represented among the eye candidates in Figure \ref{fig:grayFace}\textit{f} while only one eye is represented among the eye candidates in \ref{fig:grayFace}\textit{c}. Furthermore, to compute the bright and dark part of the image we use the Y component of the YCbCr color space. 
 
 \input{tex/grayFace.tex}
 
@@ -66,17 +66,57 @@ We begin with dilating the contour of the face quite a lot. This as the hair lin
 
 \subsubsection{Eye map}
 
+In order to deliver a precise output image we first need to locate the positions of the eyes and mouth. To extract the eyes we go by the method described in \cite{fdInColorImages} and explained in the theory section above. By Equation \ref{eq:eyeMapChroma} we compute the chromatic component of the eye map which can be seen in Figure \ref{fig:eyeMap}\textit{a}. More over is the luminance component of the eye map computed according to Equation \ref{eq:eyeMapLuma} and displayed in Figure \ref{fig:eyeMap}\textit{b} while the resulting original eye map is seen in Figure \ref{fig:eyeMap}\textit{c}.
+
 \input{tex/eyeMap.tex}
 
+To narrow the search space for the \textit{Hough transform} that will try to find bright circles in the eye map, we want to detract as much as possible from it while leaving the eyes present. Through experimental testing we have found that oversaturated parts of some images have an negative influence on the outcome of the Hough transform when it is searching for the locations of the eyes. Therefore we attempt to minify their footprint by the construction and utilization of a mask containing those regions. In this particular image there are no prominent oversaturated regions as is easily understood by viewing the oversaturated mask in Figure \ref{fig:eyeMap}\textit{d}. However Figure \ref{fig:overSaturated} illustrates that there indeed is oversaturated parts of some images and that the oversaturation usually avoid the eye regions which let us detract this mask from the original eye map. 
+
+
+\begin{figure}[H]
+\centering
+
+\begin{subfigure}{.33\textwidth}
+  \centering
+  \includegraphics[width=0.95\textwidth]{img/fd2/overSaturated_input.jpg}
+  \caption{}
+\end{subfigure}%
+\begin{subfigure}{.33\textwidth}
+  \centering
+  \includegraphics[width=0.95\textwidth]{img/fd2/overSaturated.png}
+  \caption{}
+\end{subfigure}%
+
+\caption{Original image (a) and the mask of oversaturated regions (b).}
+\label{fig:overSaturated}
+\end{figure}
+
+Another mask that we construct and detract from the original eye map is one derived from the mean colors of each channel between the pixels inside of the face mask. The mask for this example can be seen in Figure \ref{fig:averageFaceColorMask}, however it does not do provide much benefit in this case. There are though cases when this procedure will remove curls of hair hanging down on the forehead which is why we came to think about this solution. The solution is based on the assumption that we should be able to derive a better mask for the skin of the face after we have derived the face mask and that the eyes should lie inside of the filled version of that skin mask.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.3\textwidth]{img/fd2/averageFaceColorMask.png}
+\caption{Mask containing the pixels of the original image that lie close to the mean color of the face mask. Here is pixels with a maximum difference of 20 percent from the mean value of each channel allowed. This as we have found that individual comparisons of the values of each channel works better than comparing the actual colors (RGB vectors).}
+\label{fig:averageFaceColorMask}
+\end{figure}
+
+Finally we also detract a tentative mouth mask and everything outside of the face mask while AND-ing that resulting mask with a dilated version of the mask containing the eye candidates seen in Figure \ref{fig:eyeMap}\textit{e}. This execution gives us the final eye map (depicted in Figure \ref{fig:eyeMap}\textit{f}) that we will hand over to the Hough transform that will try to find the true locations of the eyes.
 
 
 \subsubsection{Mouth map}
+
+The mouth map seen in Figure \ref{fig:mouthMap}\textit{a} is computed by 
+Equation \ref{eq:mouthMap} after the face has been aligned by compensating for the rotations in the image plane. By thresholding the mouth map with half of the maximum value inside of the rectangular mask seen in Figure \ref{fig:mouthMap}\textit{b} we find blobs of mouth candidates. Figure \ref{fig:mouthMap}\textit{b} is derived from the eyes by measuring the distance between them while using this distance when estimating where the mouth should be located. Then by selecting the largest blob among the mouth candidates we determine the mouth mask seen in Figure \ref{fig:mouthMap}\textit{c} and by computing its centroid we also determine its location. 
 
 \input{tex/mouthMap.tex}
 
 
 
+
+
 \subsubsection{Output}
+
+When the final eye map, Figure \ref{fig:eyeMap}\textit{f}, has been computed we compensate for any rotations less than 90$^{\circ}$ inside of the image plane in order to align the face. We find the rotation of the face by determining the angle of the vector ranging from the right eye to the left eye. Figure \ref{fig:rotationAndOutput}\textit{a} show the face image and the locations of the eyes before the compensating rotation has taken place while Figure \ref{fig:rotationAndOutput}\textit{b} show the compensated image. Finally by measuring the horizontal distance between the eyes and the vertical distance between the eyes and mouth we can derive the output of the face detection phase seen in Figure \ref{fig:rotationAndOutput}\textit{c}.
 
 \begin{figure}[H]
 \centering
