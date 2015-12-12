@@ -91,7 +91,7 @@ To narrow the search space for the \textit{Hough transform} that will try to fin
 \label{fig:overSaturated}
 \end{figure}
 
-Another mask that we construct and detract from the original eye map is one derived from the mean colors of each channel between the pixels inside of the face mask. The mask for this example can be seen in Figure \ref{fig:averageFaceColorMask}, however it does not do provide much benefit in this case. There are though cases when this procedure will remove curls of hair hanging down on the forehead which is why we came to think about this solution. The solution is based on the assumption that we should be able to derive a better mask for the skin of the face after we have derived the face mask and that the eyes should lie inside of the filled version of that skin mask.
+Another mask that we construct and detract from the original eye map is one derived from the mean colors of each channel between the pixels inside of the face mask. The negated version of the mask detracted in this example can be seen in Figure \ref{fig:averageFaceColorMask}, however it does not do provide much benefit in this case. There are though cases when this procedure will remove curls of hair hanging down on the forehead which is why we came to think about this solution. The solution is based on the assumption that we should be able to derive a better mask for the skin of the face after we have derived the face mask and that the eyes should lie inside of the filled version of that skin mask.
 
 \begin{figure}[H]
 \centering
