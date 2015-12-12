@@ -1,20 +1,21 @@
-A face rotation can be performed by taking advantage of the symmetric of the face, where both eyes are mirrored from the line that goes through the center point of the face and is aligned along the y-axis. This is done by extracting the eyes from the eye map and use the symmetric line to get the correct rotation angle.
-\newline
-REF!!!
-The algorithm used to locate the eyes as circle object, is called Circular Hough Transform, CHT. The algorithm is mainly used because of its robustness at noisy areas, occlusion and varying illumination. There are no specific steps to implement the algorithm, therefore, a short description of the chosen steps is presented as follows.
-\newline
-\newline
-The first step is to compute the accumulator array. The foreground pixels of high gradients are chosen to act as candidate pixels, they are allowed to cast "votes" in the accumulator array. The candidate pixels vote in a circle pattern around them with a fixed radius, see figure \ref{fig:CHT}
-\newline
+A compensation for the in image plane rotation of a face can be achieved by taking advantage of the symmetry of faces, namely that both eyes most often form a vector that is parallel to the horizon. After the extraction of such a vector one can easily find the rotation of the face.
+
+The algorithm we use to locate the eyes is called the \textit{Circular Hough Transform} (CHT) which is a feature extraction technique for finding circles. The algorithm is popular and often used because of its robustness in noisy areas and tolerance for occlusion and varying illumination \cite{cht}. However there exits no specific manual on how to implement an algorithm based on CHT, a brief description of how it can be done is though included below.
+
+TODO: fix the stuff below.
+
+% https://www.cis.rit.edu/class/simg782/lectures/lecture_10/lec782_05_10.pdf
+
+% http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_circle/hough_circle.html
+
+The first step can be to define an accumulator array where \textit{votes} can be stored. More votes on a pixel increases the likelihood of it being a center point for a circle. The foreground pixels of high gradients are then chosen to act as candidate pixels which are allowed to cast \textit{votes} in the accumulator array. The candidate pixels then vote in a circle pattern around them, which is illustrated by Figure \ref{fig:CHT}.
+
 \begin{figure}[H]
-\centering
-
 \includegraphics[scale=0.4]{img/fd/accarray.png}
-
 \caption{CHT voting pattern to estimate the center of the circle.}
 \label{fig:CHT}
 \end{figure}
-\indent 
-The second step is to estimate the center. The position votes of candidate pixels belonging to an image circle tend to accumulate at the center of the circle. Therefore, the center of the circle is estimated by detecting the peaks in the accumulator array, where the votes are stored.
 
-When the eyes are located and extracted, a rotation of the face can finally be performed.  The goal is to rotate the vector, that has its start point at the left eye and end point at the right eye, so that it is parallel with the x-axis. The rotation angle is estimated by the properties of the definition of the dot product operation.
+The second step is to estimate a center point. The position votes from the candidate pixels belonging to an image circle tend to accumulate at the center of the circle. Therefore, the center of the circle is estimated by detecting the peaks in the accumulator array, where the votes are stored.
+
+
