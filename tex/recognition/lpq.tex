@@ -1,34 +1,34 @@
-Applying the method of local phase quantization (LPQ) to solve the problem of face recognition was introduced in~\cite{LPQ:1996}. This method is proposed especially to solve the problem of recognizing faces in blurred images since the image descriptions provided by LPQ are considered to be blur invariant.
+Applying the method of local phase quantization (LPQ) to solve the problem of face recognition was introduced in~\cite{LPQ:1996}. This method is proposed especially to solve the problem of recognizing faces in blurred images, since the image descriptions provided by LPQ are considered to be blur invariant.
 
-The LPQ method work under the assumption that the blur in an image can be represented as a function called the point spread function (PSF). The final blurred image can then be obtained by applying a convolution between the clean image and the PSF as seen in Equation~\ref{eq:PSFConv} where \(i\) is the clean image, \(b\) is the PSF and \(f\) is the blurred image.
+The LPQ method work under the assumption that the blur in an image can be represented as a function, called the point spread function (PSF). The final blurred image can then be obtained by applying a convolution between the clean image and the PSF. As seen in Equation~\ref{eq:PSFConv}, where \(i\) is the clean image, \(b\) is the PSF and \(f\) is the blurred image.
 
 \begin{equation}
   f = i \ast b
 \label{eq:PSFConv}
 \end{equation}
 
-Applying the Fourier transform to Equation~\ref{eq:PSFConv} will result in Equation~\ref{eq:PSFFT} where \(I\), \(B\) and \(F\) represent the Fourier transforms of \(i\), \(b\) and \(f\).
+Applying the Fourier transform to Equation~\ref{eq:PSFConv} will result in Equation~\ref{eq:PSFFT}, where \(I\), \(B\) and \(F\) represent the Fourier transforms of \(i\), \(b\) and \(f\).
 
 \begin{equation}
   F = I \cdot B
 \label{eq:PSFFT}
 \end{equation}
 
-Taking the argument of \(F\) in order to compute the phase will result in Equation~\ref{eq:PSFFTPhase} where \(\angle F\), \(\angle I\) and \(\angle B\) is the phase of \(F\), \(I\) and \(B\) respectively.
+Taking the argument of \(F\) in order to compute the phase will result in Equation~\ref{eq:PSFFTPhase}, where \(\angle F\), \(\angle I\) and \(\angle B\) are the phases of \(F\), \(I\) and \(B\) respectively.
 
 \begin{equation}
   \angle F = \angle I \cdot \angle B
 \label{eq:PSFFTPhase}
 \end{equation}
 
-From Equation~\ref{eq:PSFFTPhase} a blur invariant descriptor of the image can be derived using two properties of the Fourier transform. The first is the property that states that the Fourier transform of a symmetric function will be a real value function~\cite[p. 151]{FandLTransforms}. By combining this with the knowledge from~\cite{PSFSymmetry} that PSFs are generally symmetric and that the phase of a real value function is either \(0\) or \(\pi\) the conclusion can be reached that \(\angle B\) can only assume the values \(0\) or \(\pi\). Furthermore~\cite{LPQ:1996} claims that regular PSFs are often close in shape to a Gaussian or a sinc function which as shown in~\cite[p. 144-148]{FandLTransforms} have a positive Fourier transform for small enough frequencies. This realization leads to the conclusion that \(\angle B = 0\). Using this in Equation~\ref{eq:PSFFTPhase} results in Equation~\ref{eq:PSFFTFinal} that indicates that \(\angle F\) is a blur invariant descriptor of the image since it is not dependent on the PSF.
+From Equation~\ref{eq:PSFFTPhase}, a blur invariant descriptor of the image can be derived using two properties of the Fourier transform. The first property states that the Fourier transform of a symmetric function will be a real value function~\cite[p. 151]{FandLTransforms}. By combining this with the knowledge from~\cite{PSFSymmetry}, that PSFs are generally symmetric and that the phase of a real value function is either \(0\) or \(\pi\), the conclusion can be reached that \(\angle B\) can only assume the value \(0\) or \(\pi\). Furthermore, ~\cite{LPQ:1996} claims that regular PSFs are often close in shape to a Gaussian function or a sinc function, which as shown in~\cite[p. 144-148]{FandLTransforms}, has a positive Fourier transform for small enough frequencies. This realization leads to the conclusion that \(\angle B = 0\). Using this in Equation~\ref{eq:PSFFTPhase} results in Equation~\ref{eq:PSFFTFinal}, that indicates that \(\angle F\) is a blur invariant descriptor of the image since it is not dependent on the PSF.
 
 \begin{equation}
   \angle F = \angle I
 \label{eq:PSFFTFinal}
 \end{equation}
 
-In order to compute the phase of the image a short-time Fourier transform (STFT) is used. The STFT computes the Fourier transform for a given frequency interval that is chosen to be small enough for \(B > 0\) to be valid. Four such intervals, seen in Equation~\ref{eq:LPQIntervals}, are chosen and computed per pixel.
+In order to compute the phase of the image, a short-time Fourier transform (STFT) is used. The STFT computes the Fourier transform for a given frequency interval that is chosen to be small enough for \(B > 0\) to be valid. Four such intervals, seen in Equation~\ref{eq:LPQIntervals}, are chosen and computed per pixel.
 
 \begin{equation}
   u_{1} = \left [ a, 0 \right ], u_{2} = \left [ 0, a \right ], u_{3} = \left [ a, a \right ], u_{4} = \left [ a, -a \right ]
@@ -47,4 +47,4 @@ For every pixel the real and imaginary parts of each STFT computation is stored 
 
 Combining the binary representations of the real and imaginary parts of all four STFT values results in an 8-bit binary value. This value can be transformed into a decimal number between \(0\) and \(255\). Finally the image descriptor can be derived by computing a histogram over the decimal numbers representing each pixel.
 
-Once the image descriptor have been computed it can be compared with other descriptors to see if their respective images can be considered a match. The comparison is performed by calculating the average euclidean distance between the values in the descriptors. If the distance is smaller than a certain threshold the images are considered a match.
+Once the image descriptor have been computed it can be compared with other descriptors to see if their respective images can be considered a match. The comparison is performed by calculating the average euclidean distance between the values in the descriptors. If the distance is smaller than a certain threshold, the images are considered a match.
