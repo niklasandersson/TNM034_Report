@@ -1,4 +1,4 @@
-We have implemented a way of color correcting the images given as input. It consists of two parts where the first part is black balancing and the second part is white balancing. An example of what our algorithm achieve is pictured in Figure \ref{fig:cc}.  
+We have implemented a way of color correcting the images given as input. It consists of two parts, where the first part is black balancing and the second part is white balancing. An example of what our algorithm achieve is pictured in Figure \ref{fig:cc}.  
 
 \begin{figure}[H]
 \centering
@@ -24,7 +24,7 @@ We have implemented a way of color correcting the images given as input. It cons
 \subsubsection{Black balancing}
 This part aims to calibrate the black pixels of the image in order to make the most black pixels true black. We got the idea to do this when we saw that some of the faces in our dataset were not correctly estimated by our YCbCr color space thresholding. In particular there were some blue tinted images, such as Figure \ref{fig:cc}\textit{a}, that did not register faces properly. 
 
-To solve this problem we extract a few percent ($1.5$) of the most black pixels in each channel of the image. Then we compute the mean value of these before we subtract the computed values from each pixel of the image. The resulting image will then contain more pure black pixels but also more poor white pixels, which leads us on to the next part, namely white balancing.
+To solve this problem we extract a few percent ($1.5$) of the most black pixels in each channel of the image. Then, we compute the mean value of these before we subtract the computed values from each pixel of the image. The resulting image will then contain more pure black pixels but also more poor white pixels, which leads us on to the next part, namely white balancing.
 
 
 \subsubsection{White balancing}
