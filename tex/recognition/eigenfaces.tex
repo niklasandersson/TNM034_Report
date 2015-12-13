@@ -1,4 +1,4 @@
-Eigenfaces can be used as an approach for human face recognition and is the name given to a set of eigenvectors \cite{eigenface1}. According to the authors of \cite{eigenface2} these are the initialization operations to acquire the eigenfaces: 
+Eigenfaces can be used as an approach for human face recognition and is the name given to a set of eigenvectors \cite{eigenface1}. According to the authors of \cite{eigenface2}, these are the initialization operations to acquire the eigenfaces: 
 
 \begin{itemize}
   \item Prepare a training set of face images.
@@ -22,14 +22,14 @@ The eigenfaces $\mathbf{u}_l $ are given by Equation~\ref{eq:eigenface} below.
 \label{eq:eigenface}
 \end{equation}
 	
-	For the face recognition part we need to project a image $\mathbf{\Gamma} $ to the face space $\mathbf{\Omega} = \widehat{U}^T(\mathbf{\Gamma} - \mathbf{\Psi}) $ and determine which face class that image belongs to. Here $\widehat{U}$ is the set of eigenvectors and $\mathbf{\Omega}$ is the weight vector that represents the new face in face space. By minimizing the Euclidean distance which is shown in Equation ~\ref{eq:euclidean} we can determine which face class a certain image belongs to.
+	For the face recognition part, we need to project an image $\mathbf{\Gamma} $ to the face space $\mathbf{\Omega} = \widehat{U}^T(\mathbf{\Gamma} - \mathbf{\Psi}) $ and determine which face class that image belongs to. Here $\widehat{U}$ is the set of eigenvectors and $\mathbf{\Omega}$ is the weight vector that represents the new face in face space. By minimizing the Euclidean distance, which is shown in Equation ~\ref{eq:euclidean}, we can determine which face class a certain image belongs to.
 	
 \begin{equation}
 \epsilon_k = \left \| \mathbf{\Omega} - \mathbf{\Omega}_k  \right \| 	
 \label{eq:euclidean}
 \end{equation}
 
-	In Equation ~\ref{eq:euclidean}, $\mathbf{\Omega}_k$ is a weight vector that represents the \emph{k}th face class. If the distance $\epsilon_k$ is lower than a certain threshold $\mathbf{\Theta} $ the image is considered to belong to the database.
+	In Equation ~\ref{eq:euclidean}, $\mathbf{\Omega}_k$ is a weight vector that represents the \emph{k}th face class. If the distance $\epsilon_k$ is lower than a certain threshold $\mathbf{\Theta}$, the image is considered to belong to the database.
 
 In Figure \ref{fig:eigenface} below some eigenfaces are shown with our implementation.
 
@@ -61,6 +61,6 @@ In Figure \ref{fig:eigenface} below some eigenfaces are shown with our implement
   % \label{fig:sub1}
 \end{subfigure}%
 
-\caption{Example of some eigenfaces from our database}
+\caption{Example of some eigenfaces from our database.}
 \label{fig:eigenface}
 \end{figure}
