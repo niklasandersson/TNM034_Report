@@ -5,3 +5,18 @@ In this section we present how our algorithm performs concretely through benchma
 
 \subsection{Face recognition}
 \input{tex/resultsFR.tex}
+
+\subsection{Overview}
+Table~\ref{tb:fr_overview_results} shows the result of running both face detection and face recognition.
+
+\begin{center}
+  \captionof{table}{Results of performing both face detection and face recognition on the test data set.}
+  \label{tb:fr_overview_results}
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{ | l | l | l | l | l |}
+    \hline
+    Number of images & False positives & False negatives & Failed detections & Recognition Rate \\ \hline
+    78 & 0 & 10 & 4 & 82\% \\ \hline
+    \end{tabular}
+    }
+\end{center}
