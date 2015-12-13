@@ -1,9 +1,11 @@
 
-
-\input{tex/fdResults.tex}
+The face detection part of our algorithm performs flawlessly on the original images in the given datasets which can be seen in Figure \ref{fig:faces} as most outputs from the images in the given datasets is included in it. That it performs well on these original images is not a coincidence as the algorithm were developed and verified through testing on the given datasets. In Figure \ref{fig:fdResults} we showcase how tolerant our algorithm can be for various conditions in certain images.
 
 \input{tex/faces.tex}
 
-\input{tex/fdResults2.tex}
+However when our algorithm is faced with tougher conditions, for example blurry  or very small images it somewhat breaks down. This is presumably due to hard coded thresholds and kernel widths for the morphological operations. Detailed results where we have made the images harder to analyze through adding artificial artifacts can be looked up in Table \ref{tb:result}.
+
+\input{tex/fdResults.tex}
+
 
 \input{tex/fdResultsTable.tex}
