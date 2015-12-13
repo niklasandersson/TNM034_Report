@@ -2,7 +2,7 @@ This section will be explained through an example where the input is the color c
 
 
 
-In short, initially is the input image padded with zeros on all sides by a $4x4$ kernel in order for future morphological operations to work as intended. Then are several masks derived that are used for image segmentation in order to narrow the search space for eyes and mouth. To be clear, we will call the mask that marks out where the estimated face is in the image for \textit{face mask} and the result of this phase for \textit{output}. The output is essentially an image derived from a narrowed face mask in form of a rectangle that precisely covers the eyes and mouth, see Figure \ref{fig:rotationAndOutput}\textit{c} for an example. When the face mask is found we can search for the eyes and mouth. The eyes and mouth will then be used to compute the output. 
+In short, initially the input image is padded with zeros on all sides by a $4x4$ kernel in order for future morphological operations to work as intended. Several masks are then derived and used for image segmentation in order to narrow the search space for eyes and mouth. To be clear, we will call the mask that marks out where the estimated face is in the image for \textit{face mask} and the result of this phase for \textit{output}. The output is essentially an image derived from a narrowed face mask in form of a rectangle that precisely covers the eyes and mouth, see Figure \ref{fig:rotationAndOutput}\textit{c} for an example. When the face mask is found we can search for the eyes and mouth. The eyes and mouth will then be used to compute the output. 
 
 \input{tex/faceMasks.tex}
 
@@ -103,7 +103,7 @@ Finally we also detract a tentative mouth mask and everything outside of the fac
 
 \subsubsection{Eyes extraction}
 
-We use the Circular Hough Transform implicitly by using Matlab's function \textit{imfindcircles} when we determine the locations of the eyes in the final eye map. We have set a very high threshold to be used by the function making it deliver many possible bright circles that could be our eyes. As the returning output comes out in a sorted list with the best circle estimation at index zero, we assume that this circle is one of the eyes. Then we look at the next index to see if that circle is the other eye. If we find that the location of this circle is not further away than the combined radius of the first eye and this circle's times four, we deem this eye candidate being too close to the first eye in order to be accepted as being the second eye. Therefore we will repeatedly move on to next circle until we found one that can be verified as being the second eye.
+We use the Circular Hough Transform implicitly by using Matlab's function \textit{imfindcircles} when we determine the locations of the eyes in the final eye map. We have set a very high threshold to be used by the function making it deliver many possible bright circles that could be our eyes. As the returning output comes out in a sorted list with the best circle estimation at index zero, we assume that this circle is one of the eyes. Then we look at the next index to see if that circle is the other eye. If we find that the location of this circle is not further away than the combined radius of the first eye and this circle's times four, we deem this eye candidate being too close to the first eye in order to be accepted as being the second eye. Therefore we will repeatedly move on to next circle until we find one that can be verified as being the second eye.
 
 \subsubsection{Mouth map}
 
