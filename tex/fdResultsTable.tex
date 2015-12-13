@@ -1,16 +1,31 @@
+\begin{table}
+  \captionof{table}{The final result of the hit ratio over all images for different test scenarios. The results are in percentage format.}
+  \label{tb:result}
+\begin{tabular}{l*{10}{c}r}
+\hline
+Parameters & Access (db1) & No access (db0) & Hard (db2) & Test images \\
+\hline
+Blur, $\sigma$ = 0.5  & 94 	& 75 		& 95 		& 50  \\ \hline
+Blur, $\sigma$ = 1.0  & 88 		& 50 		& 84 	& 50 \\ \hline
+Blur, $\sigma$ = 2.5  & 19 	& 25 		& 84 		& 33 \\ \hline
+Tone, I = 0.5  		& 94 	& 100	 		& 95		& 94 \\ \hline
+Tone, I = 0.7  		& 94		& 100   	    & 95 	& 89 	\\ \hline
+Tone, I = 1.3  		& 75		& 75		& 87 	& 61 	 \\ \hline
+Scale, s = 0.9 		& 100 		& 50 		& 95 	& 94 	 \\ \hline
+Scale, s = 1.1  		& 100 		& 100 		& 97 	& 94		  \\ \hline
+Scale, s = 2  			& 100 		& 50		& 97 	& 50		  \\ \hline
+Rotation, $\theta$ = 5  	& 94 	& 75		& 97 		& 78 	 \\ \hline
+Rotation, $\theta$ = 10   & 94 	& 75		& 95 		& 78 	 \\ \hline
+Rotation, $\theta$ = 20   & 88 		& 50		& 95 	& 72 	 \\ \hline
+\end{tabular}
+\end{table}
 
-With width specified:
-\begin{center}
-    \begin{tabular}{ | l | l | l | p{5cm} |}
-    \hline
-    Database & Blur, $\sigma = 0.5$ & Blur, $\sigma = 1.0$ & Blur, $\sigma = 2.5$ & Light +10$%$ & \\ \hline
-    Access & 11C & 22C & A clear & Light +10$%$ & \\ \hline
-    No Access & 9C & 19C & Cloudy & Light +10$%$ & \\ \hline
-    Hard & 10C & 21C & Rain & Blur, $\sigma = 1.0$ & \\ \hline
-    Test & 10C & 21C & Rain & Blur, $\sigma = 1.0$ & \\ \hline
-    \end{tabular}
-\end{center}
-
-The blur test is done by a gaussian low pass filter with the  standard deviation parameter $\sigma$.
-Tone testing are done by decreasing or increasing the intensity value at each pixel with a parameter L.
+The tests were performed to test different types of image problems and conditions, such as: illumination, scale, rotation and blur. The blur tests were done by a gaussian low pass filter with the standard deviation parameter $\sigma$.
+The tone level tests were done by decreasing or increasing the intensity value at each pixel with a global percentage parameter I. For example, $ I = 0.5$ decreases the intensity of the image with 50 \%.
+All images are rotated with an angle $\theta$ and scaled with a percentage parameter $s$.
+\newline
+\indent Table \ref{tb:result} presents the hit ratio for the face detection with different types of test images and databases.
+The images in the database \textit{Access} are persons with access permissons and with different types of background envoriments.
+\textit{No access} images on persons that should not be granted access. The images have homogeneous intensities and backgrounds.
+The database \textit{Hard} has images with highly varying backgrounds and illumination conditions. Finally, \textit{Test images} is a collection of randomly selected images with various conditions foreground and background conditions. 
 
