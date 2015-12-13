@@ -8,7 +8,7 @@ In short, initially is the input image padded with zeros on all sides by a $4x4$
 
 
 \subsubsection{Estimated skin mask}
-After padding the color corrected input image several masks are computed. At first is a mask for estimated skin regions computed through thresholding inside the \textit{YCbCr} color space. See Equation \ref{eq:estimatedSkinMask} for the specific values we use and Figure \ref{fig:faceMasks}\textit{b} for the estimated skin mask of this example.
+After padding the color corrected input image several masks are computed. At first, a mask for estimated skin regions is computed through thresholding inside the \textit{YCbCr} color space. See Equation \ref{eq:estimatedSkinMask} for the specific values we use and Figure \ref{fig:faceMasks}\textit{b} for the estimated skin mask of this example.
 
 \begin{equation} \label{eq:estimatedSkinMask}
 \begin{split}
@@ -18,7 +18,7 @@ estimatedSkinMask = and( & and(C_{b}> 95, \ C_{b} < 145), \\
 \end{equation}
 
 \subsubsection{Background mask}
-Next follows the computation of a mask for the background (Figure \ref{fig:faceMasks}\textit{c}), or in more particular, a mask containing large homogeneous regions of low frequency. This as we assume that a face contain a lot of high frequency parts while background regions, e.g. walls, often are homogeneous and mostly consist of low frequencies. To avoid that small regions in the face are selected for this mask we remove all regions with areas containing less than $5$ percent of the pixels of the image.
+Next follows the computation of a mask for the background (Figure \ref{fig:faceMasks}\textit{c}), or in more particular, a mask containing large homogeneous regions of low frequency. This as we assume that a face contain a lot of high frequency parts while background regions, e.g. walls, often are homogeneous and mostly consist of low frequencies. To avoid that small regions in the face are selected for this mask, we remove all regions with areas containing less than $5$ percent of the pixels of the image.
 
 The function takes the gray version of the input image as argument. Furthermore, we first increase the contrast of the image by using \textit{Matlab's} \textit{imadjust} function. Then we use edge filtering on the image with the \textit{Canny} kernel. This will highlight the edges of the image. We then perform some morphological operations that will implicitly threshold the image and deliver a binary mask containing blobs that represent each region, see Figure \ref{fig:AllBackgroundBlobs}. As previously mentioned before continuing any computation, we remove small blobs.
 
